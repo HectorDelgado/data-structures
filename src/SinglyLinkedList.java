@@ -1,15 +1,12 @@
-import java.util.HashSet;
-import java.util.Set;
-
 public class SinglyLinkedList {
-    private Node head;
+    private SLLNode head;
 
     public SinglyLinkedList() {
         head = null;
     }
 
     public SinglyLinkedList(int data) {
-        head = new Node(data);
+        head = new SLLNode(data);
     }
 
     /**
@@ -18,7 +15,7 @@ public class SinglyLinkedList {
      * @return If the data exists in the list.
      */
     public boolean contains(int data) {
-        Node currentNode = head;
+        SLLNode currentNode = head;
 
         while (currentNode != null) {
             if (currentNode.getData() == data) {
@@ -37,7 +34,7 @@ public class SinglyLinkedList {
      * @return The number of occurrences in the list.
      */
     public int count(int data) {
-        Node currentNode = head;
+        SLLNode currentNode = head;
         int count = 0;
 
         while (currentNode != null) {
@@ -57,7 +54,7 @@ public class SinglyLinkedList {
      */
     public void push(int data) {
         // Allocate the Node and put in data
-        Node newNode = new Node(data);
+        SLLNode newNode = new SLLNode(data);
 
         // Make next of new node point to head
         newNode.setNext(head);
@@ -73,13 +70,13 @@ public class SinglyLinkedList {
      * @param previousNode The node before the one to be deleted.
      * @param data The data that will be added.
      */
-    public void insertAfter(Node previousNode, int data) {
+    public void insertAfter(SLLNode previousNode, int data) {
         if (previousNode == null) {
             throw new IllegalArgumentException("Previous node cannot be null.");
         }
 
         // Allocate the Node and put in data
-        Node newNode = new Node(data);
+        SLLNode newNode = new SLLNode(data);
 
         // Make next of new Node as next of previous Node
         newNode.setNext(previousNode.getNext());
@@ -88,7 +85,7 @@ public class SinglyLinkedList {
         previousNode.setNext(newNode);
     }
 
-    public void insertBefore(Node nextNode, int data) {
+    public void insertBefore(SLLNode nextNode, int data) {
 
     }
 
@@ -98,14 +95,14 @@ public class SinglyLinkedList {
      */
     public void append(int data) {
         // Allocate the Node and put in data
-        Node newNode = new Node(data);
+        SLLNode newNode = new SLLNode(data);
 
         // If linked list is empty, make new node as head
         if (head == null) {
             head = newNode;
         } else {
             // Else traverse LinkedList until last node
-            Node lastNode = head;
+            SLLNode lastNode = head;
             while (lastNode.getNext() != null) {
                 lastNode = lastNode.getNext();
             }
@@ -121,8 +118,8 @@ public class SinglyLinkedList {
      */
     public void remove(int data) {
         // Store current node and previous node
-        Node currentNode = head;
-        Node previousNode = null;
+        SLLNode currentNode = head;
+        SLLNode previousNode = null;
 
         // If head node holds key, point head to next Node
         if (currentNode != null && currentNode.getData() == data) {
@@ -155,7 +152,7 @@ public class SinglyLinkedList {
             throw new ArrayIndexOutOfBoundsException(msg);
         } else {
             // Store pointer to previous node that will be removed
-            Node previousNode = head;
+            SLLNode previousNode = head;
 
             // If node to be deleted is first, move head to next node
             if (position == 0) {
@@ -168,7 +165,7 @@ public class SinglyLinkedList {
 
                 // Store node ahead of node to be deleted,
                 // set node before node to be deleted to next node.
-                Node nextNode = previousNode.getNext().getNext();
+                SLLNode nextNode = previousNode.getNext().getNext();
                 previousNode.setNext(nextNode);
             }
         }
@@ -184,15 +181,15 @@ public class SinglyLinkedList {
     }
 
     public void removeDuplicates() {
-        Node currentNode = head;
-        Node nextNode = null;
+        SLLNode currentNode = head;
+        SLLNode nextNode = null;
 
         while (currentNode != null && currentNode.getNext() != null) {
             nextNode = currentNode;
 
             while (nextNode.getNext() != null) {
                 if (currentNode.getData() == nextNode.getNext().getData()) {
-                    Node temp = nextNode.getNext();
+                    SLLNode temp = nextNode.getNext();
                     nextNode.setNext(nextNode.getNext().getNext());
                     System.gc();
                 } else {
@@ -213,14 +210,14 @@ public class SinglyLinkedList {
      * @return The Node at the given position.
      * @throws ArrayIndexOutOfBoundsException if position is greater than size of list.
      */
-    public Node getNodeAt(int position) {
+    public SLLNode getNodeAt(int position) {
         if (position >= size()) {
             String msg = String.format("Can't access element at position %d from list of size %d", position, size());
             throw new ArrayIndexOutOfBoundsException(msg);
         }
 
-        Node currentNode = head;
-        Node targetNode = null;
+        SLLNode currentNode = head;
+        SLLNode targetNode = null;
 
         for (int i = 0; i <= position; i++) {
             if (i == position) {
@@ -243,7 +240,7 @@ public class SinglyLinkedList {
     public int size() {
         // Counter for nodes
         int count = 0;
-        Node currentNode = head;
+        SLLNode currentNode = head;
 
         // Increment count while we have valid nodes
         while (currentNode != null) {
@@ -255,7 +252,7 @@ public class SinglyLinkedList {
     }
 
     public void printList() {
-        Node currentNode = head;
+        SLLNode currentNode = head;
 
         System.out.print("SingleLinkedList: ");
 
