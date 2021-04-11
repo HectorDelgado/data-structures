@@ -1,4 +1,8 @@
+/**
+ * A custom implementation of a doubly linked list.
+ */
 public class DoublyLinkedList {
+    // Head node of list.
     private DLLNode head;
 
     public DoublyLinkedList() {
@@ -7,6 +11,50 @@ public class DoublyLinkedList {
 
     public DoublyLinkedList(int data) {
         head = new DLLNode(data);
+    }
+
+    public DoublyLinkedList(DoublyLinkedList list) {
+        head = list.head;
+    }
+
+    public DLLNode getHead() {
+        return head;
+    }
+
+    /**
+     * Checks if the specified data exists in the list.
+     * @param data The data to search for.
+     * @return If the data exists in the list.
+     */
+    public boolean contains(int data) {
+        DLLNode currentNode = head;
+
+        while (currentNode != null) {
+            if (currentNode.getData() == data) {
+                return true;
+            }
+            currentNode = currentNode.getNext();
+        }
+
+        return false;
+    }
+
+    /**
+     * Counts the number of times a specific data is found in the list.
+     * @param data The data to count.
+     * @return The number of occurrences in the list.
+     */
+    public int count(int data) {
+        DLLNode currentNode = head;
+        int count = 0;
+
+        while (currentNode != null) {
+            if (currentNode.getData() == data) {
+                count++;
+            }
+            currentNode = currentNode.getNext();
+        }
+        return count;
     }
 
     /**
@@ -50,6 +98,15 @@ public class DoublyLinkedList {
         // Update prev of newNodes next node
         if (newNode.getNext() != null) {
             newNode.getNext().setPrev(newNode);
+        }
+    }
+
+    public void insertAfter(int previousData, int newData) {
+        DLLNode currentNode = head;
+        DLLNode newNode = new DLLNode(newData);
+
+        while (currentNode != null && currentNode.getData() != previousData) {
+            
         }
     }
 

@@ -1,13 +1,17 @@
+import arraylist.MyArrayList;
+
+import java.util.ArrayList;
+
 public class Runner {
     public static void main(String[] args) {
-        DoublyLinkedList dll = new DoublyLinkedList(0);
-        dll.push(3);
-        dll.push(5);
-        dll.append(15);
+        MyArrayList arrayList = new MyArrayList();
+        arrayList.add(1);
+        arrayList.add(3);
+        arrayList.add(-4);
+        arrayList.printList();
 
-        dll.printList();
-        dll.reverse();
-        dll.printList();
+        MyArrayList reversed = arrayList.reverse();
+        reversed.printList();
 
 
     }
