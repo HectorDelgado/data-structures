@@ -1,16 +1,32 @@
+package linkedlist;
+
 import java.util.HashSet;
 
 /**
  * A custom implementation of a singly linked list.
  */
-public class SinglyLinkedList {
-    // Head node of list.
+public class MySinglyLinkedList<T extends Comparable<T>> {
+    protected class SLLNode {
+        T data;
+        SLLNode next;
+
+        public SLLNode() {
+            data = null;
+            next = null;
+        }
+
+        public SLLNode(T data) {
+            this.data = data;
+            next = null;
+        }
+    }
+
     private SLLNode head;
 
     /**
      * Constructor to create an empty Linked List.
      */
-    public SinglyLinkedList() {
+    public MySinglyLinkedList() {
         head = null;
     }
 
@@ -18,7 +34,7 @@ public class SinglyLinkedList {
      * Constructor to create a Linked List with the data as the head.
      * @param data The data to store in the head node.
      */
-    public SinglyLinkedList(int data) {
+    public MySinglyLinkedList(T data) {
         head = new SLLNode(data);
     }
 
@@ -26,27 +42,23 @@ public class SinglyLinkedList {
      * Constructor to create a Linked List from another Linked List.
      * @param list The other Linked List.
      */
-    public SinglyLinkedList(SinglyLinkedList list) {
-        head = list.head;
-    }
-
-    public SLLNode getHead() {
-        return head;
+    public MySinglyLinkedList(MySinglyLinkedList<T> list) {
+        // TODO perform deep copy
     }
 
     /**
      * Checks if the specified data exists in the list.
      * @param data The data to search for.
-     * @return If the data exists in the list.
+     * @return True if the data exists in the list.
      */
-    public boolean contains(int data) {
-        SLLNode currentNode = head;
+    public boolean contains(T data) {
+        SLLNode current = head;
 
-        while (currentNode != null) {
-            if (currentNode.getData() == data) {
+        while (current != null) {
+            if (current.data == data) {
                 return true;
             }
-            currentNode = currentNode.getNext();
+            current = current.next;
         }
 
         return false;
@@ -57,16 +69,15 @@ public class SinglyLinkedList {
      * @param data The data to count.
      * @return The number of occurrences in the list.
      */
-    public int count(int data) {
-        SLLNode currentNode = head;
+    public int count(T data) {
+        SLLNode current = head;
         int count = 0;
 
-        while (currentNode != null) {
-            if (currentNode.getData() == data) {
+        while (current != null) {
+            if (current.data == data) {
                 count++;
             }
-
-            currentNode = currentNode.getNext();
+            current = current.next;
         }
 
         return count;
@@ -76,14 +87,9 @@ public class SinglyLinkedList {
      * Adds a Node at the front of the list.
      * @param data The data that will be added.
      */
-    public void push(int data) {
-        // Allocate the Node and put in data
+    public void push(T data) {
         SLLNode newNode = new SLLNode(data);
-
-        // Make next of new node point to head
-        newNode.setNext(head);
-
-        // Move head to point to new node
+        newNode.next = head;
         head = newNode;
     }
 
@@ -92,15 +98,15 @@ public class SinglyLinkedList {
      * @param previousNode The node before the one to be deleted.
      * @param data The data that will be added to the list.
      */
-    public void insertAfter(SLLNode previousNode, int data) {
+    public void insertAfter(SLLNode previousNode, T data) {
         // Allocate the Node and put in data
         SLLNode newNode = new SLLNode(data);
 
         // Make next of new Node as next of previous Node
-        newNode.setNext(previousNode.getNext());
+        newNode.next = previousNode.next;
 
         // Make next of previous node as new Node
-        previousNode.setNext(newNode);
+        previousNode.next = newNode;
     }
 
     /**
@@ -108,19 +114,19 @@ public class SinglyLinkedList {
      * @param previousData The data of the previous node.
      * @param newData The data that will be added to the list.
      */
-    public void insertAfter(int previousData, int newData) {
+    public void insertAfter(T previousData, T newData) {
         SLLNode previousNode = head;
         SLLNode newNode = new SLLNode(newData);
 
         // Traverse list while previousNode is not null and data is not found
-        while (previousNode != null && previousNode.getData() != previousData) {
-            previousNode = previousNode.getNext();
+        while (previousNode != null && previousNode.data != previousData) {
+            previousNode = previousNode.next;
         }
 
         // If previous node is not null, update pointers
         if (previousNode != null) {
-            newNode.setNext(previousNode.getNext());
-            previousNode.setNext(newNode);
+            newNode.next = previousNode.next;
+            previousNode.next = newNode;
         }
     }
 
@@ -129,26 +135,26 @@ public class SinglyLinkedList {
      * @param previousData The data of the previous node.
      * @param newData The data that will be added to the list.
      */
-    public void insertBefore(int previousData, int newData) {
+    public void insertBefore(T previousData, T newData) {
         SLLNode targetNode = head;
         SLLNode previousNode = null;
         SLLNode newNode = new SLLNode(newData);
 
         // Base case, new data is inserted before head
-        if (head.getData() == previousData) {
-            newNode.setNext(head);
+        if (head.data.equals(newData)) {
+            newNode.next = head;
             head = newNode;
         } else {
             // Traverse list while targetNode is not null and data is not found
-            while (targetNode != null && targetNode.getData() != previousData) {
+            while (targetNode != null && targetNode.data != previousData) {
                 previousNode = targetNode;
-                targetNode = targetNode.getNext();
+                targetNode = targetNode.next;
             }
 
             // If previous node is not null, update pointers
             if (targetNode != null) {
-                newNode.setNext(targetNode);
-                previousNode.setNext(newNode);
+                newNode.next = targetNode;
+                previousNode.next = newNode;
             }
         }
     }
@@ -157,7 +163,7 @@ public class SinglyLinkedList {
      * Adds a Node at the end of the list.
      * @param data The data that will be added.
      */
-    public void append(int data) {
+    public void append(T data) {
         // Allocate the Node and put in data
         SLLNode newNode = new SLLNode(data);
 
@@ -167,12 +173,12 @@ public class SinglyLinkedList {
         } else {
             // Else traverse LinkedList until last node
             SLLNode lastNode = head;
-            while (lastNode.getNext() != null) {
-                lastNode = lastNode.getNext();
+            while (lastNode.next != null) {
+                lastNode = lastNode.next;
             }
 
             // Change the next of last node
-            lastNode.setNext(newNode);
+            lastNode.next = newNode;
         }
     }
 
@@ -180,26 +186,26 @@ public class SinglyLinkedList {
      * Removes a node with the given data from the list.
      * @param data The data to be removed.
      */
-    public void remove(int data) {
+    public void remove(T data) {
         // Store current node and previous node
         SLLNode currentNode = head;
         SLLNode previousNode = null;
 
         // If head node holds key, point head to next Node
-        if (currentNode != null && currentNode.getData() == data) {
-            head = currentNode.getNext();
+        if (currentNode != null && currentNode.data.equals(data)) {
+            head = currentNode.next;
         } else {
             // Search for the key to be deleted, keep track of
             // previous node as we need to change temp.next
-            while (currentNode != null && currentNode.getData() != data) {
+            while (currentNode != null && !currentNode.data.equals(data)) {
                 previousNode = currentNode;
-                currentNode = currentNode.getNext();
+                currentNode = currentNode.next;
             }
 
             // If our current node is not null (pointing to next of last node),
             // set node before node to be deleted to next node
             if (currentNode != null) {
-                previousNode.setNext(currentNode.getNext());
+                previousNode.next = currentNode.next;
             }
         }
     }
@@ -220,17 +226,17 @@ public class SinglyLinkedList {
 
             // If node to be deleted is first, move head to next node
             if (position == 0) {
-                head = head.getNext();
+                head = head.next;
             } else {
                 // Iterate through list until we reach the previous node
                 for (int i = 0; i < position - 1; i++) {
-                    previousNode = previousNode.getNext();
+                    previousNode = previousNode.next;
                 }
 
                 // Store node ahead of node to be deleted,
                 // set node before node to be deleted to next node.
-                SLLNode nextNode = previousNode.getNext().getNext();
-                previousNode.setNext(nextNode);
+                SLLNode nextNode = previousNode.next.next;
+                previousNode.next = nextNode;
             }
         }
     }
@@ -245,56 +251,6 @@ public class SinglyLinkedList {
     }
 
     /**
-     * Removes duplicate values from the list.
-     */
-    public void removeDuplicates() {
-        HashSet<Integer> set = new HashSet<>();
-        SLLNode currentNode = head;
-        SLLNode previousNode = null;
-
-        while (currentNode != null) {
-            // If value is found in HashSet,
-            // point previousNode's next to duplicate's next
-            if (set.contains(currentNode.getData())) {
-                previousNode.setNext(currentNode.getNext());
-                System.out.println("Found duplicate values of " + currentNode.getData());
-            } else {
-                // Add unique data to HashSet, update previousNode
-                set.add(currentNode.getData());
-                previousNode = currentNode;
-            }
-            currentNode = currentNode.getNext();
-        }
-    }
-
-    /**
-     * Retrieves a Node at the given position if found.
-     * @param position The position of the Node to retrieve.
-     * @return The Node at the given position.
-     * @throws ArrayIndexOutOfBoundsException if position is greater than size of list.
-     */
-    public SLLNode getNodeAt(int position) {
-        if (position >= size()) {
-            String msg = String.format("Can't access element at position %d from list of size %d", position, size());
-            throw new ArrayIndexOutOfBoundsException(msg);
-        }
-
-        SLLNode currentNode = head;
-        SLLNode targetNode = null;
-
-        for (int i = 0; i <= position; i++) {
-            if (i == position) {
-                targetNode = currentNode;
-                break;
-            } else {
-                currentNode = currentNode.getNext();
-            }
-        }
-
-        return targetNode;
-    }
-
-    /**
      * Calculates and returns the number of elements in the list.
      * @return The number of elements in the list.
      */
@@ -306,10 +262,59 @@ public class SinglyLinkedList {
         // Increment count while we have valid nodes
         while (currentNode != null) {
             count++;
-            currentNode = currentNode.getNext();
+            currentNode = currentNode.next;
         }
 
         return count;
+    }
+
+    /**
+     * Removes duplicate values from the list.
+     */
+    public void removeDuplicates() {
+        HashSet<T> set = new HashSet<>();
+        SLLNode currentNode = head;
+        SLLNode previousNode = null;
+
+        while (currentNode != null) {
+            // If value is found in HashSet,
+            // point previousNode's next to duplicate's next
+            if (set.contains(currentNode.data)) {
+                previousNode.next = currentNode.next;
+            } else {
+                // Add unique data to HashSet, update previousNode
+                set.add(currentNode.data);
+                previousNode = currentNode;
+            }
+            currentNode = currentNode.next;
+        }
+    }
+
+    /**
+     * Retrieves a Node at the given position if found.
+     * @param position The position of the Node to retrieve.
+     * @return The item at the given position.
+     * @throws ArrayIndexOutOfBoundsException if position is greater than size of list.
+     */
+    public T getAt(int position) {
+        if (position >= size()) {
+            String msg = String.format("Can't access element at position %d from list of size %d", position, size());
+            throw new ArrayIndexOutOfBoundsException(msg);
+        }
+
+        SLLNode currentNode = head;
+        T targetNode = null;
+
+        for (int i = 0; i <= position; i++) {
+            if (i == position) {
+                targetNode = currentNode.data;
+                break;
+            } else {
+                currentNode = currentNode.next;
+            }
+        }
+
+        return targetNode;
     }
 
     /**
@@ -321,10 +326,11 @@ public class SinglyLinkedList {
         System.out.print("SingleLinkedList: Head -> ");
 
         while (currentNode != null) {
-            System.out.print(currentNode.getData() + " ");
-            currentNode = currentNode.getNext();
+            System.out.print(currentNode.data + " ");
+            currentNode = currentNode.next;
         }
 
         System.out.println("<- Tail");
     }
+
 }

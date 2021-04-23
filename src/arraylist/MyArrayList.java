@@ -9,13 +9,14 @@ import java.util.Arrays;
 public class MyArrayList {
     private int size = 0;
     private static final int DEFAULT_CAPACITY = 10;
-    private int[] elements;
+    private Integer[] elements;
+    private static final ArrayAlgorithms<Integer> arrAlgorithms = new ArrayAlgorithms<Integer>();
 
     /**
      * Default constructor to instantiate an array of DEFAULT_CAPACITY elements.
      */
     public MyArrayList() {
-        this.elements = new int[DEFAULT_CAPACITY];
+        this.elements = new Integer[DEFAULT_CAPACITY];
     }
 
     /**
@@ -24,9 +25,9 @@ public class MyArrayList {
      */
     public MyArrayList(int initialCapacity) {
         if (initialCapacity > 0) {
-            this.elements = new int[initialCapacity];
+            this.elements = new Integer[initialCapacity];
         } else if (initialCapacity == 0) {
-            this.elements = new int[] {};
+            this.elements = new Integer[] {};
         } else {
             throw new IllegalArgumentException("Initial capacity must be non-negative!");
         }
@@ -36,7 +37,7 @@ public class MyArrayList {
      * Constructor to instantiate an array from a specified array.
      * @param arr The array to copy data from.
      */
-    public MyArrayList(int[] arr, int size) {
+    public MyArrayList(Integer[] arr, int size) {
         this.elements = Arrays.copyOf(arr, arr.length);
         this.size = size;
     }
@@ -48,6 +49,7 @@ public class MyArrayList {
     public MyArrayList(MyArrayList myArrayList) {
         this.elements = Arrays.copyOf(myArrayList.elements, myArrayList.size);
         this.size = myArrayList.size;
+
     }
 
     /**
@@ -55,7 +57,7 @@ public class MyArrayList {
      * The array may grow in size if the internal array is at capacity.
      * @param data The element to add.
      */
-    public void add(int data) {
+    public void add(Integer data) {
         ensureCapacity();
         elements[size++] = data;
     }
@@ -66,7 +68,7 @@ public class MyArrayList {
      * @param index The index to insert data at.
      * @param data The element to add.
      */
-    public void addAt(int index, int data) {
+    public void addAt(int index, Integer data) {
         if (index >= 0 && index < elements.length) {
             ensureCapacity();
             elements[index] = data;
@@ -105,7 +107,7 @@ public class MyArrayList {
      * @param index The index to retrieve data from.
      * @return The element at the specified index.
      */
-    public int get(int index) {
+    public Integer get(int index) {
         if (index >= 0 && index < size) {
             return elements[index];
         } else {
@@ -119,7 +121,7 @@ public class MyArrayList {
      * @param index The index to update data at.
      * @param data The new data that will replace the previous data.
      */
-    public void set(int index, int data) {
+    public void set(int index, Integer data) {
         if (index >= 0 && index < size) {
             elements[index] = data;
         } else {
@@ -133,13 +135,12 @@ public class MyArrayList {
      * @param data The element to search for.
      * @return Whether or not the element exists in the list.
      */
-    public boolean contains(int data) {
-        for (int element : elements) {
-            if (element == data) {
+    public boolean contains(Integer data) {
+        for (Integer element : elements) {
+            if (element.equals(data)) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -149,17 +150,22 @@ public class MyArrayList {
      * @param data The element to search for.
      * @return The first index that the element was found at.
      */
-    public int indexOf(int data) {
-        int location = -1;
+    public int indexOf(Integer data) {
+        int left = 0;
+        int right = size - 1;
 
-        for (int i = 0; i < size; i++) {
-            if (elements[i] == data) {
-                location = i;
-                break;
+        while (left < right) {
+            if (elements[left].equals(data)) {
+                return left;
+            } else if (elements[right].equals(data)) {
+                return right;
             }
+
+            left++;
+            right--;
         }
 
-        return location;
+        return -1;
     }
 
     /**
@@ -206,7 +212,7 @@ public class MyArrayList {
      * Creates a new array containing the same elements but double in capacity.
      * @return A new array double the size of the original.
      */
-    private int[] grow() {
+    private Integer[] grow() {
         int newCapacity = elements.length * 2;
         return Arrays.copyOf(elements, newCapacity);
     }
@@ -217,7 +223,7 @@ public class MyArrayList {
      */
     public MyArrayList reverse() {
         int last = size - 1;
-        int[] reversed = new int[elements.length];
+        Integer[] reversed = new Integer[elements.length];
 
         for (int i = 0; i < size; i++) {
             reversed[i] = elements[last--];
@@ -241,6 +247,22 @@ public class MyArrayList {
             start++;
             end--;
         }
+    }
+
+    public int binarySearchRecursive(Integer element) {
+        return arrAlgorithms.binarySearch(elements, 0, elements.length - 1, element);
+    }
+
+    public int binarySearchIterative(int element) {
+        return arrAlgorithms.binarySearch(elements, element);
+    }
+
+    public int jumpSearch(int element) {
+        return arrAlgorithms.jumpSearch(elements, element);
+    }
+
+    public int exponentialSearch(int element) {
+        return arrAlgorithms.exponentialSearch(elements, element);
     }
 
     /**
